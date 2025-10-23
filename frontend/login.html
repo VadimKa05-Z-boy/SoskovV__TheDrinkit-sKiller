@@ -1,0 +1,54 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Вход — SosCoffe</title>
+  <link rel="stylesheet" href="style/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner container">
+      <a href="index.html" class="header__home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>Вход в аккаунт</h1>
+    </div>
+  </header>
+
+  <main class="content container">
+    <form class="login-form" id="loginForm">
+      <div class="login-form__group">
+        <label for="email">Электронная почта</label>
+        <input type="email" id="email" name="email" placeholder="example@mail.ru" required>
+      </div>
+      <div class="login-form__group">
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" required>
+      </div>
+      <div class="login-form__actions">
+        <button type="submit" class="btn btn--primary">Войти</button>
+        <button type="button" class="btn btn--secondary" onclick="window.location.href='user-company-info.html'">
+          Зарегистрироваться
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // Сохраняем в localStorage (имитация входа)
+      localStorage.setItem('user', JSON.stringify({ email, password }));
+      alert('✅ Вход выполнен!');
+      window.location.href = 'profile.html';
+    });
+  </script>
+</body>
+</html>

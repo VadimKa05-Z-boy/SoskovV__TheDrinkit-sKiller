@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Карта</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+    .header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 100;
+      background: white;
+      padding: 8px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="profile.html" class="header__profile profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>
+        </svg>
+      </a>
+      <a href="cart.html" class="header__cart cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>
+        </svg>
+      </a>
+      <a href="index.html" class="header__home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <div id="map"></div>
+
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+  <script>
+    ymaps.ready(function () {
+      const cafes = [
+        {
+          id: 'cafe-1',
+          name: 'КофеКульт на Театральной 4а',
+          address: 'г. Орёл, ул. Театральная, д. 4а',
+          coords: [54.513489, 36.257486]
+        }
+      ];
+
+      const myMap = new ymaps.Map('map', {
+        center: [54.513489, 36.257486],
+        zoom: 16,
+        controls: ['zoomControl'],
+        type: 'yandex#satellite'
+      });
+
+      cafes.forEach(cafe => {
+        const placemark = new ymaps.Placemark(
+          cafe.coords,
+          {
+            iconCaption: cafe.name,
+            balloonContent: `${cafe.address}<br><button class="select-cafe-btn" data-id="${cafe.id}" data-name="${cafe.name}" data-address="${cafe.address}">Выбрать это заведение</button>`
+          },
+          { preset: 'islands#darkOrangeCircleDotIcon' }
+        );
+        myMap.geoObjects.add(placemark);
+      });
+
+      // Делегирование клика по кнопке в балуне
+      document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('select-cafe-btn')) {
+          const id = e.target.dataset.id;
+          const name = e.target.dataset.name;
+          const address = e.target.dataset.address;
+
+          localStorage.setItem('selectedCafe', JSON.stringify({
+            id,
+            name,
+            address
+          }));
+
+          alert(`✅ Вы выбрали: ${name}`);
+          window.location.href = 'index.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,513 @@
+@charset "UTF-8";
+/**
+  Нормализация блочной модели
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/**
+  Убираем внутренние отступы слева тегам списков,
+  у которых есть атрибут class
+ */
+:where(ul, ol):where([class]) {
+  padding-left: 0;
+}
+
+/**
+  Убираем внешние отступы body и двум другим тегам,
+  у которых есть атрибут class
+ */
+body,
+:where(blockquote, figure):where([class]) {
+  margin: 0;
+}
+
+/**
+  Убираем внешние отступы вертикали нужным тегам,
+  у которых есть атрибут class
+ */
+:where(h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+dl):where([class]) {
+  margin-block: 0;
+}
+
+:where(dd[class]) {
+  margin-left: 0;
+}
+
+:where(fieldset[class]) {
+  margin-left: 0;
+  padding: 0;
+  border: none;
+}
+
+/**
+  Убираем стандартный маркер маркированному списку,
+  у которого есть атрибут class
+ */
+:where(ul[class]) {
+  list-style: none;
+}
+
+/**
+  Обнуляем вертикальные внешние отступы параграфа,
+  объявляем локальную переменную для внешнего отступа вниз,
+  чтобы избежать взаимодействие с более сложным селектором
+ */
+p {
+  --paragraphMarginBottom: 24px;
+  margin-block: 0;
+}
+
+/**
+  Внешний отступ вниз для параграфа без атрибута class,
+  который расположен не последним среди своих соседних элементов
+ */
+p:where(:not([class]):not(:last-child)) {
+  margin-bottom: var(--paragraphMarginBottom);
+}
+
+/**
+  Упрощаем работу с изображениями
+ */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/**
+  Наследуем свойства шрифт для полей ввода
+ */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+html {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  height: 100%;
+  /**
+    Плавный скролл
+   */
+  scroll-behavior: smooth;
+}
+
+body {
+  /**
+    Пригодится в большинстве ситуаций
+    (когда, например, нужно будет "прижать" футер к низу сайта)
+   */
+  min-height: 100%;
+  /**
+    Унифицированный интерлиньяж
+   */
+  line-height: 1.5;
+}
+
+/**
+  Приводим к единому цвету svg-элементы
+ */
+svg *[fill] {
+  fill: currentColor;
+}
+
+svg *[stroke] {
+  stroke: currentColor;
+}
+
+/**
+  Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+ */
+svg * {
+  transition-property: fill, stroke;
+}
+
+/**
+  Удаляем все анимации и переходы для людей,
+  которые предпочитают их не использовать
+ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root {
+  --primary: #FFBA00;
+  --bg: #F9F9F9;
+  --text: #333;
+  --white: #FFF;
+  --border: #CCC;
+}
+
+body {
+  font-size: clamp(16px, 1.25vw, 18px);
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  line-height: 1.28;
+  color: var(--color-dark);
+  background-color: var(--color-light);
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+  transition-duration: var(--transition-duration);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 500;
+}
+
+h1 {
+  font-size: clamp(43px, 4.1666666667vw, 60px);
+}
+
+h2 {
+  font-size: clamp(36px, 2.7777777778vw, 40px);
+}
+
+h3 {
+  font-size: clamp(26px, 2.0833333333vw, 30px);
+}
+
+h4 {
+  font-size: clamp(18px, 1.3888888889vw, 20px);
+}
+
+.container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .visible-mobile {
+    display: none !important;
+  }
+}
+
+.ghost {
+  display: none !important;
+}
+
+.header {
+  background: var(--white);
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header svg {
+  width: 24px;
+  height: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #F9F9F9;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  background: #FFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header__inner {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  gap: 20px;
+}
+.header svg {
+  width: 24px;
+  height: 24px;
+  color: #333;
+  transition: color 0.2s;
+}
+.header svg:hover {
+  color: #FFBA00;
+}
+
+.banner {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+.banner__video {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.menu-tabs {
+  margin: 24px 0 16px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.menu-tabs .tab {
+  padding: 8px 16px;
+  border: 1px solid #FFBA00;
+  background: #FFF;
+  color: #333;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.menu-tabs .tab.active, .menu-tabs .tab:hover {
+  background: #FFBA00;
+  color: black;
+}
+
+.submenu {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.submenu .subtab {
+  padding: 6px 12px;
+  border: 1px solid #CCC;
+  background: #FFF;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+.submenu .subtab:hover {
+  background: #f0f0f0;
+}
+
+.ghost {
+  display: none !important;
+}
+
+.products-container {
+  margin-bottom: 40px;
+}
+
+.product-section {
+  margin-bottom: 32px;
+}
+.product-section h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  background: #FFF;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.product-card img {
+  width: 100%;
+  height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+.product-card h4 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.product-card .price {
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFBA00;
+}
+
+.in-develop {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 0.6;
+}
+
+.profile-block {
+  background-color: var(--color-blond);
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 20px;
+}
+.profile-block__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 10px;
+}
+.profile-block__input--name, .profile-block__input--mail, .profile-block__input--number {
+  width: 50vw;
+  border-radius: 1vw;
+  padding: 5px;
+  background-color: var(--color-blond);
+  border-color: var;
+}
+.profile__link {
+  display: flex;
+  padding: 30px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.information,
+.resourses {
+  background-color: var(--color-blond);
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 20px;
+}
+.information__link,
+.resourses__link {
+  display: flex;
+  justify-content: space-between;
+}
+
+.exit {
+  background-color: var(--color-red);
+  color: var(--color-blond);
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.login-form {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.login-form__group {
+  margin-bottom: 16px;
+}
+.login-form__group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.login-form__group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+}
+.login-form__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+.login-form__actions button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.login-form__actions .btn--primary {
+  background: var(--primary);
+  color: black;
+}
+.login-form__actions .btn--secondary {
+  background: #eee;
+  color: var(--text);
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.banner__video {
+  height: 80vh;
+  border-radius: 20px;
+}/*# sourceMappingURL=styles.css.map */

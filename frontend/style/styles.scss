@@ -1,0 +1,15 @@
+@use './normolize';
+@use './fonts';
+@use './mixins';
+@use './media'; 
+@use './variables';
+@use './globals';
+@use './untils';
+
+@use 'blocks/header';
+@use 'blocks/home';
+//@use 'blocks/products';
+@use 'blocks/cart';
+@use 'blocks/profile';
+@use 'blocks/login';
+@use 'blocks/banner';

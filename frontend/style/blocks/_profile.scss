@@ -1,0 +1,55 @@
+.profile{
+    &-block{
+        background-color: var(--color-blond);
+        border-radius: 20px;
+        margin-top: 10px;
+        padding: 20px;
+
+        &__form{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            row-gap: 10px;
+        }
+
+        &__input--name,
+        &__input--mail,
+        &__input--number{
+            width: 50vw;
+            border-radius: 1vw;
+            padding: 5px;
+            background-color: var(--color-blond);
+            border-color: var;
+        }
+    }
+
+    &__link{
+        display: flex;
+        padding: 30px;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+}
+
+.information,
+.resourses{
+    background-color: var(--color-blond);
+    border-radius: 20px;
+    margin-top: 10px;
+    padding: 20px;
+    
+    &__link{
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.exit{
+    background-color: var(--color-red);
+    color: var(--color-blond);
+    border-radius: 20px;
+    margin-top: 10px;
+    padding: 20px;
+    text-align: center;
+}

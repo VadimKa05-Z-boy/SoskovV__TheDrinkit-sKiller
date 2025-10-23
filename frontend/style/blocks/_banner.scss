@@ -1,0 +1,13 @@
+.banner{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+
+    &__video{
+        //width: 200vw;
+        height: 80vh;
+        border-radius: 20px;
+    }
+}

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SosCoffe</title>
+  <style>
+    :root {
+      --primary: #FFBA00;
+      --bg: #F9F9F9;
+      --text: #333;
+      --border: #CCC;
+      --white: #FFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
+    .container {
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 16px;
+    }
+    .header {
+      background: var(--white);
+      padding: 12px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header__profile,
+    .header__cart,
+    .header__location {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .header__location svg {
+      width: 20px;
+      height: 20px;
+    }
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .banner__video,
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+    .menu-tabs {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0;
+      flex-wrap: wrap;
+    }
+    .tab,
+    .subtab {
+      padding: 8px 16px;
+      border: 1px solid var(--primary);
+      background: var(--white);
+      color: var(--text);
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .tab.active,
+    .tab:hover,
+    .subtab.active,
+    .subtab:hover {
+      background: var(--primary);
+      color: black;
+    }
+    .submenu {
+      margin: 16px 0;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ghost {
+      display: none !important;
+    }
+    .product-info h2,
+    .product-info h3,
+    .recommendations h2 {
+      margin: 16px 0 8px;
+      font-size: 18px;
+    }
+    .description {
+      margin-bottom: 12px;
+      color: #666;
+    }
+    .ingredients {
+      list-style: disc;
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    .allergens {
+      color: #e74c3c;
+      font-weight: 500;
+    }
+    .customization .option-group {
+      margin: 20px 0;
+    }
+    .customization label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .option-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .option-btn {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .option-btn.active {
+      background: var(--primary);
+      color: black;
+      border-color: var(--primary);
+    }
+    .order-summary {
+      margin: 24px 0;
+      text-align: center;
+    }
+    .price-display {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .price-display strong {
+      color: var(--primary);
+    }
+    .btn--primary {
+      background: var(--primary);
+      color: black;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      width: 100%;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+    }
+    .product-card img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product-card h4 {
+      font-size: 14px;
+      margin: 8px 0 4px;
+    }
+    .product-card .price {
+      color: var(--primary);
+      font-weight: bold;
+    }
+    #product-page {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Главная страница -->
+  <div id="main-page">
+    <header class="header">
+      <a href="profile.html" class="header__profile profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>
+        </svg>
+      </a>
+      <a href="cart.html" class="header__cart cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>
+        </svg>
+      </a>
+      <a href="location.html" class="header__location location">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 22a1 1 0 0 1-1-1v-4a1 1 0 0 1 .445-.832l3-2a1 1 0 0 1 1.11 0l3 2A1 1 0 0 1 22 17v4a1 1 0 0 1-1 1z"/><path d="M18 10a8 8 0 0 0-16 0c0 4.993 5.539 10.193 7.399 11.799a1 1 0 0 0 .601.2"/><path d="M18 22v-3"/><circle cx="10" cy="10" r="3"/>
+        </svg>
+        <span id="cafe-name">Выберите кофейню</span>
+      </a>
+    </header>
+
+    <main class="content">
+      <section class="banner">
+        <div style="background:#ddd;height:200px;display:flex;align-items:center;justify-content:center;color:#666;">
+          Видео баннер (заглушка)
+        </div>
+      </section>
+
+      <section class="menu-section container">
+        <div class="menu-tabs">
+          <button class="tab" data-category="rec">Рекомендации</button>
+          <button class="tab active" data-category="coffee">Кофе</button>
+          <button class="tab" data-category="non-coffee">Не кофе</button>
+          <button class="tab" data-category="food">Еда</button>
+        </div>
+
+        <div id="coffee-submenu" class="submenu ghost">
+          <button class="subtab active" data-subcategory="milk-coffee">Кофе с молоком</button>
+          <button class="subtab" data-subcategory="black-coffee">Чёрный кофе</button>
+        </div>
+
+        <div id="non-submenu" class="submenu ghost">
+          <button class="subtab active" data-subcategory="matcha">Матча</button>
+          <button class="subtab" data-subcategory="tea">Чай</button>
+        </div>
+
+        <div id="food" class="submenu ghost">
+          <button class="subtab active" data-subcategory="dessert">Сладкое</button>
+        </div>
+
+        <div id="milk-coffee" class="product-section">
+          <div class="products-grid" data-subcategory="milk-coffee"></div>
+        </div>
+        <div id="black-coffee" class="product-section ghost">
+          <div class="products-grid" data-subcategory="black-coffee"></div>
+        </div>
+        <div id="matcha" class="product-section ghost">
+          <div class="products-grid" data-subcategory="matcha"></div>
+        </div>
+        <div id="tea" class="product-section ghost">
+          <div class="products-grid" data-subcategory="tea"></div>
+        </div>
+        <div id="dessert" class="product-section ghost">
+          <div class="products-grid" data-subcategory="dessert"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Страница товара -->
+  <div id="product-page">
+    <header class="header">
+      <a href="#" class="header__profile profile" id="back-to-main">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1 class="header-title" id="product-name" style="font-size:18px;font-weight:600;text-align:center;flex:1;"></h1>
+      <a href="cart.html" class="header__cart cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/>
+        </svg>
+      </a>
+    </header>
+
+    <main class="content">
+      <section class="product-banner">
+        <div class="product-image" id="product-image" style="background:#eee;"></div>
+      </section>
+
+      <section class="product-info container">
+        <h2>Описание</h2>
+        <p id="product-description" class="description"></p>
+        <h3>Состав</h3>
+        <ul id="product-ingredients" class="ingredients"></ul>
+        <h3>Аллергены</h3>
+        <p id="product-allergens" class="allergens"></p>
+      </section>
+
+      <section class="customization container">
+        <h2>Настройте ваш напиток</h2>
+        <div class="option-group">
+          <label>Размер порции</label>
+          <div class="option-buttons" id="size-options"></div>
+        </div>
+        <div class="option-group">
+          <label>Тип молока</label>
+          <div class="option-buttons" id="milk-options"></div>
+        </div>
+        <div class="option-group">
+          <label>Крепость</label>
+          <div class="option-buttons" id="shot-options"></div>
+        </div>
+      </section>
+
+      <section class="order-summary container">
+        <div class="price-display">
+          <span>Итого:</span>
+          <strong id="total-price">0 ₽</strong>
+        </div>
+        <button id="add-to-cart" class="btn--primary">Добавить в заказ</button>
+      </section>
+
+      <section class="recommendations container">
+        <h2>Часто заказывают вместе</h2>
+        <div class="products-grid" id="recommendations-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const products = {
+      'T001': {
+        name: 'Латте',
+        price: 250,
+        description: 'Классический латте с молоком.',
+        ingredients: ['Эспрессо — 60 мл', 'Молоко — 200 мл'],
+        allergens: 'Содержит молоко',
+        options: {
+          size: [{ name: 'S', price: 0 }, { name: 'M', price: 30 }, { name: 'L', price: 50 }],
+          milk: [{ name: 'Обычное', price: 0 }, { name: 'Овсяное', price: 30 }],
+          shot: [{ name: 'Одинарный', price: 0 }, { name: 'Двойной', price: 20 }]
+        },
+        recommendations: ['T201']
+      },
+      'T002': {
+        name: 'Американо',
+        price: 200,
+        description: 'Крепкий чёрный кофе.',
+        ingredients: ['Эспрессо — 90 мл'],
+        allergens: 'Без аллергенов',
+        options: {
+          size: [{ name: 'S', price: 0 }, { name: 'M', price: 20 }],
+          milk: [],
+          shot: [{ name: 'Одинарный', price: 0 }, { name: 'Двойной', price: 15 }]
+        },
+        recommendations: []
+      },
+      'T201': {
+        name: 'Чизкейк',
+        price: 250,
+        description: 'Нежный чизкейк с ягодным соусом.',
+        ingredients: ['Творожный сыр', 'Яйца', 'Сахар', 'Печенье'],
+        allergens: 'Содержит молоко, яйца, глютен',
+        options: {
+          size: [{ name: 'Порция', price: 0 }],
+          milk: [],
+          shot: []
+        },
+        recommendations: ['T001']
+      }
+    };
+
+    const menuData = {
+      'milk-coffee': ['T001'],
+      'black-coffee': ['T002'],
+      'matcha': ['T001'],
+      'tea': ['T002'],
+      'dessert': ['T201']
+    };
+
+    let currentProductId = null;
+    let selectedOptions = {
+      size: { name: '', price: 0 },
+      milk: { name: '', price: 0 },
+      shot: { name: '', price: 0 }
+    };
+
+    function renderProducts(subcategory) {
+      const ids = menuData[subcategory] || [];
+      const container = document.querySelector(`[data-subcategory="${subcategory}"]`);
+      if (!container) return;
+      container.innerHTML = '';
+      ids.forEach(id => {
+        const p = products[id];
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `<h4>${p.name}</h4><div class="price">${p.price} ₽</div>`;
+        card.onclick = () => showProductPage(id);
+        container.appendChild(card);
+      });
+    }
+
+    function showProductPage(productId) {
+      const product = products[productId];
+      if (!product) return;
+      currentProductId = productId;
+      document.getElementById('product-name').textContent = product.name;
+      document.getElementById('product-description').textContent = product.description;
+      document.getElementById('product-allergens').textContent = product.allergens;
+
+      const ingList = document.getElementById('product-ingredients');
+      ingList.innerHTML = '';
+      product.ingredients.forEach(ing => {
+        const li = document.createElement('li');
+        li.textContent = ing;
+        ingList.appendChild(li);
+      });
+
+      renderOptionButtons('size', product.options.size, 'size-options');
+      renderOptionButtons('milk', product.options.milk, 'milk-options');
+      renderOptionButtons('shot', product.options.shot, 'shot-options');
+
+      selectedOptions = {
+        size: product.options.size.length ? product.options.size[0] : { name: '', price: 0 },
+        milk: product.options.milk.length ? product.options.milk[0] : { name: '', price: 0 },
+        shot: product.options.shot.length ? product.options.shot[0] : { name: '', price: 0 }
+      };
+      updateTotalPrice(product.price);
+
+      const recGrid = document.getElementById('recommendations-grid');
+      recGrid.innerHTML = '';
+      product.recommendations.forEach(id => {
+        const p = products[id];
+        if (!p) return;
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `<h4>${p.name}</h4><div class="price">${p.price} ₽</div>`;
+        card.onclick = () => showProductPage(id);
+        recGrid.appendChild(card);
+      });
+
+      document.getElementById('main-page').style.display = 'none';
+      document.getElementById('product-page').style.display = 'block';
+    }
+
+    function renderOptionButtons(type, options, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn' + (i === 0 ? ' active' : '');
+        btn.textContent = `${opt.name}${opt.price > 0 ? ` (+${opt.price} ₽)` : ''}`;
+        btn.onclick = () => {
+          container.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedOptions[type] = opt;
+          updateTotalPrice(products[currentProductId].price);
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function updateTotalPrice(base) {
+      const total = base + selectedOptions.size.price + selectedOptions.milk.price + selectedOptions.shot.price;
+      document.getElementById('total-price').textContent = `${total} ₽`;
+    }
+
+    document.getElementById('back-to-main').onclick = (e) => {
+      e.preventDefault();
+      document.getElementById('product-page').style.display = 'none';
+      document.getElementById('main-page').style.display = 'block';
+    };
+
+    // === КНОПКА "ДОБАВИТЬ В ЗАКАЗ" ===
+    document.getElementById('add-to-cart').addEventListener('click', function () {
+      const product = products[currentProductId];
+      if (!product) return;
+
+      // Собираем данные для отправки на сервер
+      const orderData = {
+        total: parseInt(document.getElementById('total-price').textContent),
+        items: [{
+          id: currentProductId,
+          variant_id: null, // можно улучшить позже
+          price: parseInt(document.getElementById('total-price').textContent)
+        }]
+      };
+
+      fetch('/api/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert(`✅ Заказ оформлен! №${data.order_id}`);
+          window.location.href = 'cart.html';
+        } else {
+          alert('❌ Ошибка: ' + data.error);
+        }
+      })
+      .catch(err => {
+        alert('⚠️ Не удалось подключиться к серверу');
+      });
+    });
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.onclick = () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelectorAll('.submenu, .product-section').forEach(el => el.classList.add('ghost'));
+        const cat = tab.dataset.category;
+        if (cat === 'coffee') {
+          document.getElementById('coffee-submenu').classList.remove('ghost');
+          document.getElementById('milk-coffee').classList.remove('ghost');
+          renderProducts('milk-coffee');
+        } else if (cat === 'non-coffee') {
+          document.getElementById('non-submenu').classList.remove('ghost');
+          document.getElementById('matcha').classList.remove('ghost');
+          renderProducts('matcha');
+        } else if (cat === 'food') {
+          document.getElementById('food').classList.remove('ghost');
+          document.getElementById('dessert').classList.remove('ghost');
+          renderProducts('dessert');
+        }
+      };
+    });
+
+    document.querySelectorAll('.subtab').forEach(btn => {
+      btn.onclick = () => {
+        const parent = btn.closest('.submenu');
+        parent.querySelectorAll('.subtab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const sub = btn.dataset.subcategory;
+        document.querySelectorAll('.product-section').forEach(el => el.classList.add('ghost'));
+        document.getElementById(sub)?.classList.remove('ghost');
+        renderProducts(sub);
+      };
+    });
+
+    // === ПОКАЗ ВЫБРАННОГО ЗАВЕДЕНИЯ ===
+    document.addEventListener('DOMContentLoaded', function () {
+      const cafe = JSON.parse(localStorage.getItem('selectedCafe'));
+      const cafeNameEl = document.getElementById('cafe-name');
+      if (cafe) {
+        cafeNameEl.textContent = cafe.name;
+      }
+      document.querySelector('.tab[data-category="coffee"]').click();
+    });
+  </script>
+</body>
+</html>

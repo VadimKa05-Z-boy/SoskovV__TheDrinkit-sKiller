@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Товар — SosCoffe</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="back-btn" aria-label="Назад">←</a>
+    <h1 class="header-title" id="product-name">Загрузка...</h1>
+    <div></div>
+  </header>
+
+  <!-- Main -->
+  <main class="content">
+    <!-- Баннер -->
+    <section class="product-banner">
+      <img id="product-image" src="" alt="" class="product-image">
+    </section>
+
+    <!-- Описание и состав -->
+    <section class="product-info container">
+      <h2>Описание</h2>
+      <p id="product-description" class="description"></p>
+
+      <h3>Состав</h3>
+      <ul id="product-ingredients" class="ingredients"></ul>
+
+      <h3>Аллергены</h3>
+      <p id="product-allergens" class="allergens"></p>
+    </section>
+
+    <!-- Персонализация -->
+    <section class="customization container">
+      <h2>Настройте ваш напиток</h2>
+
+      <div class="option-group">
+        <label>Размер порции</label>
+        <div class="option-buttons" id="size-options"></div>
+      </div>
+
+      <div class="option-group">
+        <label>Тип молока</label>
+        <div class="option-buttons" id="milk-options"></div>
+      </div>
+
+      <div class="option-group">
+        <label>Крепость</label>
+        <div class="option-buttons" id="shot-options"></div>
+      </div>
+    </section>
+
+    <!-- Итог и кнопка -->
+    <section class="order-summary container">
+      <div class="price-display">
+        <span>Итого:</span>
+        <strong id="total-price">0 ₽</strong>
+      </div>
+      <button id="add-to-cart" class="btn btn--primary">Добавить в заказ</button>
+    </section>
+
+    <!-- Рекомендации -->
+    <section class="recommendations container">
+      <h2>Часто заказывают вместе</h2>
+      <div class="products-grid" id="recommendations-grid"></div>
+    </section>
+  </main>
+
+  <script src="js/product.js"></script>
+</body>
+</html>
